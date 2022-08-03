@@ -1,0 +1,13 @@
+.box{
+    flex: 33%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    border: 1px solid #3a3a3c;
+    background-color: black;
+    margin: 5px;
+    text-align: center;
+    font-size: 30px;
+    text-transform: uppercase;
+    color: aliceblue;
+}
