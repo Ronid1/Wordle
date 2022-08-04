@@ -30,6 +30,7 @@ export function GameLogicContextProvider(props) {
 
   useEffect(() => {
     initializeBoard();
+    getWord();
   }, [wordLength, numOfGuesses]);
 
   function startGame(boardWidth, boardLength) {
@@ -50,8 +51,13 @@ export function GameLogicContextProvider(props) {
     setAttempts(tempAttempts);
   }
 
-  function getWord() {
-    setWord("");
+async function getWord() {
+    let url = 'http://localhost:8000/word/?length=' + wordLength
+    console.log("url", url)
+    await fetch(url).then(response => response.json()).then(json => {
+      console.log(json)
+      setWord(json.toUpperCase())
+    }).catch(err => console.log(err))
   }
 
   function addChar(char) {
@@ -91,6 +97,8 @@ export function GameLogicContextProvider(props) {
   }
 
   function checkRow() {
+
+    // if (!validWord()) return;
     if (currLocation.col < wordLength) return;
 
     // make a copy of the word to check row against
@@ -129,6 +137,19 @@ export function GameLogicContextProvider(props) {
     nextRow();
     if (currLocation.row === numOfGuesses) endGame();
   }
+
+  // async function validWord(){
+
+  //   word = board[currLocation.row].join('')
+
+  //   let url = 'http://localhost:8000/check/?word=' + word
+  //   await fetch(url).then(response => response.json()).then(json => {
+  //     console.log(json)
+  //     if (json == 'Entry word not found') return false
+  //     return true
+  //   }).catch(err => console.log(err))
+  // }
+  
 
   function endGame() {
     console.log("game over");
