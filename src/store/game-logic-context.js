@@ -15,6 +15,7 @@ const GameLogicContext = createContext({
   deleteChar: () => {},
   checkRow: () => {},
   endGame: () => {},
+  startGame: (boardWidth, boardLength) => {},
 });
 
 export function GameLogicContextProvider(props) {
@@ -30,6 +31,11 @@ export function GameLogicContextProvider(props) {
   useEffect(() => {
     initializeBoard();
   }, [wordLength, numOfGuesses]);
+
+  function startGame(boardWidth, boardLength) {
+    setWordLength(boardWidth);
+    setNumOfGuesses(boardLength);
+  }
 
   function initializeBoard() {
     let tempBoard = new Array(numOfGuesses);
@@ -104,9 +110,8 @@ export function GameLogicContextProvider(props) {
     }
 
     for (let i = 0; i < wordLength; i++) {
-      if (attmpesCopy[currLocation.row][i])
-        continue;
-      
+      if (attmpesCopy[currLocation.row][i]) continue;
+
       attmpesCopy[currLocation.row][i] = match.WRONG;
 
       for (let j = 0; j < wordLength; j++) {
@@ -143,6 +148,7 @@ export function GameLogicContextProvider(props) {
         deleteChar: deleteChar,
         checkRow: checkRow,
         endGame: endGame,
+        startGame: startGame,
       }}
     >
       {props.children}

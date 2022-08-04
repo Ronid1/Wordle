@@ -17,8 +17,6 @@ function Key(props) {
         gameCtx.board[gameCtx.currLocation.row - 1][i] == props.value
       ) {
         let value = gameCtx.attmpets[gameCtx.currLocation.row - 1][i];
-        console.log("value at", i, value);
-
         if (value === gameCtx.match.WRONG) setColor("wrong");
         else if (value === gameCtx.match.CORRECT) setColor("correct");
         else if (value === gameCtx.match.WRONG_SPOT) {
@@ -29,6 +27,7 @@ function Key(props) {
   }, [gameCtx.attmpets]);
 
   function typeLetter() {
+    if (!props.initialized) return;
     if (props.value == "Enter") {
       gameCtx.checkRow();
     } else if (props.value == "Delete") {

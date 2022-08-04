@@ -3,7 +3,7 @@ import GameLogicContext from "../store/game-logic-context";
 import styles from "./Keyboard.module.css";
 import Key from "./Key";
 
-function Keyboard() {
+function Keyboard(props) {
   const gameCtx = useContext(GameLogicContext);
 
   const keys = [
@@ -13,6 +13,7 @@ function Keyboard() {
   ];
 
   const keyboardClick = useCallback((event) => {
+    if (!props.initialized) return;
     if (event.key === "Enter") gameCtx.checkRow();
     else if (event.key === "Backspace") gameCtx.deleteChar();
     else gameCtx.addChar(event.key);

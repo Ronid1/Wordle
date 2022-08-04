@@ -1,3 +1,4 @@
+import React from "react";
 import Cell from "./Cell";
 import style from "./Row.module.css";
 

@@ -12,7 +12,7 @@ function Cell(props) {
   useEffect(() => {
     if (gameCtx.board.length > 0)
       setInput(gameCtx.board[location.row][location.col]);
-  }, [gameCtx.board]);
+  }, [gameCtx.board, gameCtx.numOfGuesses]);
 
   useEffect(() => {
     if (gameCtx.attmpets.length > 0) {
