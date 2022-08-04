@@ -61,7 +61,7 @@ export function GameLogicContextProvider(props) {
   }
 
   function validChar(char) {
-    return (char.length === 1 && char.toLowerCase() !== char.toUpperCase());
+    return char.length === 1 && char.toLowerCase() !== char.toUpperCase();
   }
 
   function nextCell() {
@@ -87,19 +87,33 @@ export function GameLogicContextProvider(props) {
   function checkRow() {
     if (currLocation.col < wordLength) return;
 
+    // make a copy of the word to check row against
+    let checkLetters = new Array(wordLength);
+    for (let i = 0; i < word.length; i++) {
+      checkLetters[i] = word[i];
+    }
+
     let attmpesCopy = [...attmpets];
 
+    // first iteration only check exact matches
     for (let i = 0; i < wordLength; i++) {
+      if (board[currLocation.row][i] === checkLetters[i]) {
+        attmpesCopy[currLocation.row][i] = match.CORRECT;
+        checkLetters[i] = null;
+      }
+    }
+
+    for (let i = 0; i < wordLength; i++) {
+      if (attmpesCopy[currLocation.row][i])
+        continue;
+      
       attmpesCopy[currLocation.row][i] = match.WRONG;
 
-      if (board[currLocation.row][i] === word[i])
-        attmpesCopy[currLocation.row][i] = match.CORRECT;
-      else {
-        for (let letter of word) {
-          if (board[currLocation.row][i] === letter) {
-            attmpesCopy[currLocation.row][i] = match.WRONG_SPOT;
-            break;
-          }
+      for (let j = 0; j < wordLength; j++) {
+        if (board[currLocation.row][i] === checkLetters[j]) {
+          attmpesCopy[currLocation.row][i] = match.WRONG_SPOT;
+          checkLetters[j] = null;
+          break;
         }
       }
     }
