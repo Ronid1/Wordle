@@ -22,9 +22,10 @@ export function GameLogicContextProvider(props) {
   let [board, setBoard] = useState([]);
   let [attmpets, setAttempts] = useState([]);
   let [currLocation, setCurrLocation] = useState({ row: 0, col: 0 });
-  let [word, setWord] = useState("ESSAY");
+  let [word, setWord] = useState("");
   let [wordLength, setWordLength] = useState(DEFAULT_WORD_LENGTH);
   let [numOfGuesses, setNumOfGuesses] = useState(DEFAULT_NUM_OF_GUESSES);
+  let [validWord, setValidWord] = useState(false);
 
   const match = { WRONG: 0, CORRECT: 1, WRONG_SPOT: 2 };
 
@@ -32,6 +33,13 @@ export function GameLogicContextProvider(props) {
     initializeBoard();
     getWord();
   }, [wordLength, numOfGuesses]);
+
+  useEffect(() => {
+    if (validWord) {
+      scoreWord();
+      setValidWord(false);
+    }
+  }, [validWord]);
 
   function startGame(boardWidth, boardLength) {
     setWordLength(boardWidth);
@@ -51,13 +59,15 @@ export function GameLogicContextProvider(props) {
     setAttempts(tempAttempts);
   }
 
-async function getWord() {
-    let url = 'http://localhost:8000/word/?length=' + wordLength
-    console.log("url", url)
-    await fetch(url).then(response => response.json()).then(json => {
-      console.log(json)
-      setWord(json.toUpperCase())
-    }).catch(err => console.log(err))
+  async function getWord() {
+    let url = "http://localhost:8000/word/?length=" + wordLength;
+    await fetch(url)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json)
+        setWord(json.toUpperCase());
+      })
+      .catch((err) => console.log(err));
   }
 
   function addChar(char) {
@@ -97,9 +107,14 @@ async function getWord() {
   }
 
   function checkRow() {
-
-    // if (!validWord()) return;
     if (currLocation.col < wordLength) return;
+    setValidWord(false);
+    let guess = board[currLocation.row].join("");
+    checkValidWord(guess);
+  }
+
+  function scoreWord() {
+    let guess = board[currLocation.row].join("");
 
     // make a copy of the word to check row against
     let checkLetters = new Array(wordLength);
@@ -132,24 +147,20 @@ async function getWord() {
     }
 
     setAttempts(attmpesCopy);
-    console.log("attemps", attmpets);
-
+    if (currLocation.row + 1 === numOfGuesses || guess === word) endGame();
     nextRow();
-    if (currLocation.row === numOfGuesses) endGame();
   }
 
-  // async function validWord(){
-
-  //   word = board[currLocation.row].join('')
-
-  //   let url = 'http://localhost:8000/check/?word=' + word
-  //   await fetch(url).then(response => response.json()).then(json => {
-  //     console.log(json)
-  //     if (json == 'Entry word not found') return false
-  //     return true
-  //   }).catch(err => console.log(err))
-  // }
-  
+  async function checkValidWord(guess) {
+    let url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + guess;
+    await fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.title == "No Definitions Found") setValidWord(false);
+        else setValidWord(true);
+      })
+      .catch((err) => console.log(err));
+  }
 
   function endGame() {
     console.log("game over");
