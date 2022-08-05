@@ -35,9 +35,11 @@ export function GameLogicContextProvider(props) {
   const match = { WRONG: 0, CORRECT: 1, WRONG_SPOT: 2 };
 
   useEffect(() => {
-    initializeBoard();
-    getWord();
-  }, [wordLength, numOfGuesses]);
+    if (!gameOver) {
+      initializeBoard();
+      getWord();
+    }
+  }, [wordLength, numOfGuesses, gameOver]);
 
   useEffect(() => {
     if (validWord) {

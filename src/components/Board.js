@@ -10,9 +10,16 @@ function Board(props) {
   useEffect(() => {
     let temp = [];
     for (let i = 0; i < gameCtx.numOfGuesses; i++)
-      temp.push(<Row key={i} num={i} size={gameCtx.wordLength} initialized={props.initialized} />);
+      temp.push(
+        <Row
+          key={i}
+          num={i}
+          size={gameCtx.wordLength}
+          initialized={props.initialized}
+        />
+      );
     setRows(temp);
-  }, [gameCtx.numOfGuesses, gameCtx.wordLength]);
+  }, [gameCtx.numOfGuesses, gameCtx.wordLength, props.initialized]);
 
   return <div className={style.board}>{rows}</div>;
 }
