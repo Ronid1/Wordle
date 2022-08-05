@@ -13,6 +13,7 @@ const GameLogicContext = createContext({
   word: "",
   gameOver: false,
   win: false,
+  resetGame: () => {},
   setGameOver: () => {},
   addChar: (char) => {},
   deleteChar: () => {},
@@ -35,7 +36,7 @@ export function GameLogicContextProvider(props) {
   const match = { WRONG: 0, CORRECT: 1, WRONG_SPOT: 2 };
 
   useEffect(() => {
-    if (!gameOver) {
+    if(!gameOver){
       initializeBoard();
       getWord();
     }
@@ -51,11 +52,10 @@ export function GameLogicContextProvider(props) {
   useEffect(() => {
     if (win) endGame();
   }, [win]);
-
+  
   function startGame(boardWidth, boardLength) {
     setWordLength(boardWidth);
     setNumOfGuesses(boardLength);
-    setCurrLocation({ row: 0, col: 0 });
   }
 
   function initializeBoard() {
@@ -179,6 +179,14 @@ export function GameLogicContextProvider(props) {
     setGameOver(true);
   }
 
+  function resetGame(){
+    setBoard([])
+    setAttempts([])
+    setCurrLocation({ row: 0, col: 0 });
+    setWord("")
+    setWin(false)
+  }
+
   return (
     <GameLogicContext.Provider
       value={{
@@ -191,6 +199,7 @@ export function GameLogicContextProvider(props) {
         word: word,
         gameOver: gameOver,
         win: win,
+        resetGame: resetGame,
         setGameOver: setGameOver,
         addChar: addChar,
         deleteChar: deleteChar,

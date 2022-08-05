@@ -16,8 +16,9 @@ function App() {
   }
 
   function restartGame() {
-    setInitialized(false);
+    gameCtx.resetGame()
     gameCtx.setGameOver(false);
+    setInitialized(false);
   }
 
   return (
