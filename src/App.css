@@ -7,6 +7,28 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+button{
+  margin: 25px;
+  padding: 13px;
+  font-size: 15px;
+  text-transform: uppercase;
+  background-color: #538d4e;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  border-width: 0px;
+}
+
+.modal{
+  padding: 1rem;
+  text-align: center;
+  width: 30rem;
+  z-index: 10;
+  position: fixed;
+  top: 20vh;
+  left: calc(50% - 15rem);
+}
+
 #correct {
   background-color: #538d4e;
 }

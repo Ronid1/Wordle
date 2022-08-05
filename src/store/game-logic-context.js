@@ -11,6 +11,9 @@ const GameLogicContext = createContext({
   wordLength: DEFAULT_WORD_LENGTH,
   numOfGuesses: DEFAULT_NUM_OF_GUESSES,
   word: "",
+  gameOver: false,
+  win: false,
+  setGameOver: () => {},
   addChar: (char) => {},
   deleteChar: () => {},
   checkRow: () => {},
@@ -26,6 +29,8 @@ export function GameLogicContextProvider(props) {
   let [wordLength, setWordLength] = useState(DEFAULT_WORD_LENGTH);
   let [numOfGuesses, setNumOfGuesses] = useState(DEFAULT_NUM_OF_GUESSES);
   let [validWord, setValidWord] = useState(false);
+  let [gameOver, setGameOver] = useState(false);
+  let [win, setWin] = useState(false);
 
   const match = { WRONG: 0, CORRECT: 1, WRONG_SPOT: 2 };
 
@@ -41,9 +46,14 @@ export function GameLogicContextProvider(props) {
     }
   }, [validWord]);
 
+  useEffect(() => {
+    if (win) endGame();
+  }, [win]);
+
   function startGame(boardWidth, boardLength) {
     setWordLength(boardWidth);
     setNumOfGuesses(boardLength);
+    setCurrLocation({ row: 0, col: 0 });
   }
 
   function initializeBoard() {
@@ -64,7 +74,7 @@ export function GameLogicContextProvider(props) {
     await fetch(url)
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
+        console.log(json);
         setWord(json.toUpperCase());
       })
       .catch((err) => console.log(err));
@@ -147,7 +157,8 @@ export function GameLogicContextProvider(props) {
     }
 
     setAttempts(attmpesCopy);
-    if (currLocation.row + 1 === numOfGuesses || guess === word) endGame();
+    if (guess === word) setWin(true);
+    if (currLocation.row + 1 === numOfGuesses || win) endGame();
     nextRow();
   }
 
@@ -163,7 +174,7 @@ export function GameLogicContextProvider(props) {
   }
 
   function endGame() {
-    console.log("game over");
+    setGameOver(true);
   }
 
   return (
@@ -176,6 +187,9 @@ export function GameLogicContextProvider(props) {
         wordLength: wordLength,
         numOfGuesses: numOfGuesses,
         word: word,
+        gameOver: gameOver,
+        win: win,
+        setGameOver: setGameOver,
         addChar: addChar,
         deleteChar: deleteChar,
         checkRow: checkRow,

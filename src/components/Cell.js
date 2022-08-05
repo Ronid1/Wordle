@@ -10,8 +10,13 @@ function Cell(props) {
   let [input, setInput] = useState("");
 
   useEffect(() => {
+    setColor("");
+  }, [props.initialized]);
+
+  useEffect(() => {
     if (gameCtx.board.length > 0)
       setInput(gameCtx.board[location.row][location.col]);
+    setColor("");
   }, [gameCtx.board, gameCtx.numOfGuesses]);
 
   useEffect(() => {

@@ -7,6 +7,10 @@ function Key(props) {
   let [color, setColor] = useState("");
 
   useEffect(() => {
+    setColor("")
+  },[props.initialized])
+
+  useEffect(() => {
     if (props.special) return;
 
     for (let i = 0; i < gameCtx.wordLength; i++) {

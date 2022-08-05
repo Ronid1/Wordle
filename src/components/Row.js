@@ -6,7 +6,7 @@ function Row(props) {
   let thisRow = [];
 
   for (let i = 0; i < props.size; i++)
-    thisRow.push(<Cell key={i} num={i} rowNum={props.num} />);
+    thisRow.push(<Cell key={i} num={i} rowNum={props.num} initialized={props.initialized} />);
 
   return <div className={style.row}>{thisRow}</div>;
 }

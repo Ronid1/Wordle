@@ -31,18 +31,18 @@ function Keyboard(props) {
     <div className={styles.Keyboard}>
       <div className={styles.row}>
         {keys[0].map((element) => {
-          return <Key key={element} value={element} />;
+          return <Key key={element} value={element} initialized={props.initialized} />;
         })}
       </div>
       <div className={styles.row}>
         {keys[1].map((element) => {
-          return <Key key={element} value={element} />;
+          return <Key key={element} value={element} initialized={props.initialized} />;
         })}
       </div>
       <div className={styles.row}>
         <Key value="Enter" special="true" />
         {keys[2].map((element) => {
-          return <Key key={element} value={element} />;
+          return <Key key={element} value={element} initialized={props.initialized} />;
         })}
         <Key value="Delete" special="true" />
       </div>

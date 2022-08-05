@@ -21,7 +21,7 @@ function SizeInitializer(props) {
   }
 
   return (
-    <div className={styles.modal}>
+    <div className='modal'>
       <div className={styles.question}>
         <p>How long should the word be?</p>
         <div>
@@ -104,10 +104,10 @@ function SizeInitializer(props) {
           8
         </div>
       </div>
-      <button className={styles.button} onClick={startGame}>
+      <button onClick={startGame}>
         {" "}
         Start Game{" "}
-      </button>
+      </button >
     </div>
   );
 }

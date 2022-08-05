@@ -3,14 +3,14 @@ import Row from "./Row";
 import style from "./Board.module.css";
 import GameLogicContext from "../store/game-logic-context";
 
-function Board() {
+function Board(props) {
   const gameCtx = useContext(GameLogicContext);
   let [rows, setRows] = useState([]);
 
   useEffect(() => {
     let temp = [];
     for (let i = 0; i < gameCtx.numOfGuesses; i++)
-      temp.push(<Row key={i} num={i} size={gameCtx.wordLength} />);
+      temp.push(<Row key={i} num={i} size={gameCtx.wordLength} initialized={props.initialized} />);
     setRows(temp);
   }, [gameCtx.numOfGuesses, gameCtx.wordLength]);
 
